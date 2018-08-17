@@ -21,16 +21,9 @@ class HomePageTest(TestCase):
     def test_redirecionamento_apos_post(self):
         response = self.client.post('/', data={'tarefa': 'item fake'})
         self.assertEquals(response.status_code, 302)
-        self.assertEquals(response['location'],'/')
+        self.assertEquals(response['location'],'/lista/lista-unica')
 
-    def test_mostrar_todos_os_itens(self):
-        Item.objects.create(texto='item 1')
-        Item.objects.create(texto='item 2')
 
-        response = self.client.get('/')
-
-        self.assertIn('item 1', response.content.decode())
-        self.assertIn('item 1', response.content.decode())
 
 class ItemTest(TestCase):
 
@@ -56,3 +49,14 @@ class ItemTest(TestCase):
         # Fazendo os asserts
         self.assertEquals(item_salvo_1.texto, 'Primeiro Item')
         self.assertEquals(item_salvo_2.texto, 'Segundo Item')
+
+class ListViewTest(TestCase):
+
+    def test_mostrar_todos_os_itens(self):
+        Item.objects.create(texto='item 1')
+        Item.objects.create(texto='item 2')
+
+        response = self.client.get('/lista/lista-unica')
+
+        self.assertContains(response, 'item 1')
+        self.assertContains(response, 'item 2')

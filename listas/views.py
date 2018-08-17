@@ -9,7 +9,11 @@ def home_page(request):
 
     if request.method == 'POST':
         item = Item.objects.create(texto=request.POST['tarefa'])
-        return redirect('/')
+        return redirect('/lista/lista-unica')
 
     itens = Item.objects.all()
     return render(request, 'listas/home.html',{'itens':  itens })
+
+def lista(request):
+    itens = Item.objects.all()
+    return render(request, 'listas/home.html', {'itens': itens})
