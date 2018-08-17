@@ -13,11 +13,30 @@ class HomePageTest(TestCase):
         self.assertTemplateUsed(response, 'listas/home.html')
 
     def test_post_request(self):
-        response = self.client.post('/', data={'tarefa':'a new list item'})
-        self.assertIn('a new list item', response.content.decode())
+        response = self.client.post('/', data={'tarefa':'item fake'})
+        self.assertEquals(Item.objects.count(), 1)
+        novo_item = Item.objects.first()
+        self.assertEquals(novo_item.texto, 'item fake')
 
+    def test_redirecionamento_apos_post(self):
+        response = self.client.post('/', data={'tarefa': 'item fake'})
+        self.assertEquals(response.status_code, 302)
+        self.assertEquals(response['location'],'/')
+
+    def test_mostrar_todos_os_itens(self):
+        Item.objects.create(texto='item 1')
+        Item.objects.create(texto='item 2')
+
+        response = self.client.get('/')
+
+        self.assertIn('item 1', response.content.decode())
+        self.assertIn('item 1', response.content.decode())
 
 class ItemTest(TestCase):
+
+    def test_sem_insercao_em_branco(self):
+        response = self.client.get('/')
+        self.assertEquals(Item.objects.count(), 0)
 
     def test_salvando_item_e_buscando_banco(self):
         # Criando objeto do tipo Item
