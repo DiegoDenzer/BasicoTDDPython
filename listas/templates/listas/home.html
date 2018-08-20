@@ -8,15 +8,6 @@
     {% csrf_token %}
     <input name="tarefa" type="text" id="id_new_item" placeholder="Nova Tarefa">
 </form>
-<table id="id_list_table">
-    {% for item in itens %}
-        <tr>
-        <td>{{ item.texto }} </td>
-    </tr>
-    {% endfor %}
 
-
-
-</table>
 </body>
 </html>

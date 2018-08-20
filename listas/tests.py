@@ -24,7 +24,6 @@ class HomePageTest(TestCase):
         self.assertEquals(response['location'],'/lista/lista-unica')
 
 
-
 class ItemTest(TestCase):
 
     def test_sem_insercao_em_branco(self):
@@ -50,6 +49,7 @@ class ItemTest(TestCase):
         self.assertEquals(item_salvo_1.texto, 'Primeiro Item')
         self.assertEquals(item_salvo_2.texto, 'Segundo Item')
 
+
 class ListViewTest(TestCase):
 
     def test_mostrar_todos_os_itens(self):
@@ -60,3 +60,14 @@ class ListViewTest(TestCase):
 
         self.assertContains(response, 'item 1')
         self.assertContains(response, 'item 2')
+
+class NovoItemListaTest(TestCase):
+    def test_salvar_post_requisicao(self):
+        self.client.post('/lista/new', data={'tarefa': 'A new item'})
+        self.assertEquals(Item.objects.count(),1)
+        novo_item = Item.objects.first()
+        self.assertEquals(novo_item.texto, 'A new item')
+
+    def test_redirect_apos_post(self):
+        response = self.client.post('/lista/new', data={'tarefa': 'novo item'})
+        self.assertRedirects(response,'lista/lista-unica')

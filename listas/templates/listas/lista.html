@@ -1,0 +1,15 @@
+<html>
+<head>
+    <title>Lista Tarefas</title>
+</head>
+<body>
+<h1>Lista Tarefas</h1>
+    <table id="id_list_table">
+    {% for item in itens %}
+        <tr>
+        <td>{{ item.texto }} </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

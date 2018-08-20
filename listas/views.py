@@ -9,11 +9,15 @@ def home_page(request):
 
     if request.method == 'POST':
         item = Item.objects.create(texto=request.POST['tarefa'])
-        return redirect('/lista/lista-unica')
+        return redirect('lista/lista-unica')
 
     itens = Item.objects.all()
-    return render(request, 'listas/home.html',{'itens':  itens })
+    return render(request, 'listas/home.html', {'itens':  itens })
 
 def lista(request):
     itens = Item.objects.all()
-    return render(request, 'listas/home.html', {'itens': itens})
+    return render(request, 'listas/lista.html', {'itens': itens})
+
+def nova_lista(request):
+    item = Item.objects.create(texto=request.POST['tarefa'])
+    return redirect('lista/lista-unica')
